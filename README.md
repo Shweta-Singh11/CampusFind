@@ -79,46 +79,17 @@ This creates all tables, indexes, RLS policies, the `is_admin()` helper, the `pu
 
 > **Schema note:** The `public_found_items` view uses `security_invoker = false` (definer-style) so the anonymous role can read it without direct table access, satisfying NFR-002. The view only returns unreturned items ("returned" is derived from the `item_return` table, not an `is_returned` column).
 
-### 3. Create Storage Buckets
+### 3. Create Storage Buckets & Policies
 
-In Supabase Dashboard → **Storage**, create two buckets:
+In your Supabase SQL Editor, simply open and execute:
 
-| Bucket name | Public | Purpose |
-|---|---|---|
-| `item-photos-public` | **Yes** | Photos of non-high-value found items |
-| `restricted-files` | **No** | High-value item photos, claim proof, return evidence |
-
-**Storage policies** (run in SQL Editor after the migration):
-
-```sql
--- Public bucket: allow all reads; allow anyone (students, staff, and admins) to upload photos of found items
-create policy "Public read item-photos-public"
-  on storage.objects for select
-  using (bucket_id = 'item-photos-public');
-
-create policy "Anyone can upload to item-photos-public"
-  on storage.objects for insert
-  with check (bucket_id = 'item-photos-public');
-
--- Restricted: allow anon upload to claims/ (claim proof) and items/ (student high-value item reports)
-create policy "Anon upload restricted files"
-  on storage.objects for insert
-  to anon
-  with check (
-    bucket_id = 'restricted-files'
-    and (
-      (storage.foldername(name))[1] = 'claims'
-      or (storage.foldername(name))[1] = 'items'
-    )
-  );
-
--- Admins have full access to restricted-files (view and manage)
-create policy "Admin full access restricted-files"
-  on storage.objects for all
-  to authenticated
-  using (bucket_id = 'restricted-files' and is_admin())
-  with check (bucket_id = 'restricted-files' and is_admin());
 ```
+supabase/migrations/003_storage_setup.sql
+```
+
+This single script will automatically:
+1. Create the `item-photos-public` bucket (public) and `restricted-files` bucket (private) with 5 MB file limits.
+2. Set up all required Row Level Security (RLS) policies allowing public users to view item photos and submit claims/reports, while keeping high-value photos and claimant proofs protected for administrators.
 
 ### 4. Create the First Admin Account
 

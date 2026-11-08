@@ -9,19 +9,25 @@ import imageCompression from 'browser-image-compression'
 
 function handleError(error, friendlyMessage) {
   console.error(friendlyMessage, error)
-  throw new Error(friendlyMessage)
+  const detail = error?.message || error?.error_description || (typeof error === 'string' ? error : '')
+  const msg = detail ? `${friendlyMessage}: ${detail}` : friendlyMessage
+  throw new Error(msg)
 }
 
 async function compressImage(file) {
+  if (!file) return file
+  if (!file.type || !file.type.startsWith('image/')) return file
   const options = {
     maxSizeMB: 4.5,
     maxWidthOrHeight: 1920,
-    useWebWorker: true,
-    fileType: file.type,
+    useWebWorker: false,
+    fileType: file.type || 'image/jpeg',
   }
   try {
-    return await imageCompression(file, options)
-  } catch {
+    const compressed = await imageCompression(file, options)
+    return compressed || file
+  } catch (err) {
+    console.warn('Image compression bypassed, using original file:', err)
     return file
   }
 }
@@ -105,15 +111,35 @@ export function getPublicItemPhotoUrl(photoPath) {
 // ─── Public: Submit Claim ─────────────────────────────────────────────────────
 
 export async function uploadClaimProofPhoto(file) {
-  const compressed = await compressImage(file)
-  const ext = compressed.name.split('.').pop()
-  const filename = `claims/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+  const rawName = (file && file.name) ? file.name : 'proof.jpg'
+  const ext = rawName.includes('.') ? rawName.split('.').pop().toLowerCase() : 'jpg'
+  const filename = `claims/${Date.now()}-${Math.random().toString(36).slice(2, 9)}.${ext}`
+
+  let uploadData = file
+  try {
+    uploadData = await compressImage(file)
+  } catch (compErr) {
+    console.warn('Compression skipped:', compErr)
+    uploadData = file
+  }
+
+  const contentType = (uploadData && uploadData.type) || (file && file.type) || 'image/jpeg'
 
   const { error } = await supabase.storage
     .from('restricted-files')
-    .upload(filename, compressed, { contentType: compressed.type, upsert: false })
+    .upload(filename, uploadData, { contentType, upsert: false })
 
-  if (error) handleError(error, 'Failed to upload proof photo. Please try again.')
+  if (error) {
+    console.error('Proof upload error details:', error)
+    if (error.message?.toLowerCase().includes('bucket not found') || error.statusCode === 404 || error.statusCode === '404' || error.error === 'Bucket not found') {
+      throw new Error("Upload failed: Storage bucket 'restricted-files' was not found in Supabase. Please run 'supabase/migrations/003_storage_setup.sql' in your Supabase SQL Editor.")
+    }
+    if (error.message?.toLowerCase().includes('row-level security') || error.statusCode === 403 || error.statusCode === '403') {
+      throw new Error("Upload failed: Permission denied by Supabase Storage RLS policy. Please run 'supabase/migrations/003_storage_setup.sql' in your Supabase SQL Editor.")
+    }
+    handleError(error, 'Failed to upload proof photo')
+  }
+
   return filename
 }
 
@@ -150,18 +176,39 @@ export async function trackClaim(claimCode, contactNo) {
 // ─── Admin: Items ─────────────────────────────────────────────────────────────
 
 export async function uploadItemPhoto(file, isHighValue) {
-  const compressed = await compressImage(file)
-  const ext = compressed.name.split('.').pop()
-  const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
   const bucket = isHighValue ? 'restricted-files' : 'item-photos-public'
   const prefix = isHighValue ? 'items/' : ''
+  const rawName = (file && file.name) ? file.name : 'item.jpg'
+  const ext = rawName.includes('.') ? rawName.split('.').pop().toLowerCase() : 'jpg'
+  const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}.${ext}`
+  const fullPath = `${prefix}${filename}`
+
+  let uploadData = file
+  try {
+    uploadData = await compressImage(file)
+  } catch (compErr) {
+    console.warn('Compression skipped:', compErr)
+    uploadData = file
+  }
+
+  const contentType = (uploadData && uploadData.type) || (file && file.type) || 'image/jpeg'
 
   const { error } = await supabase.storage
     .from(bucket)
-    .upload(`${prefix}${filename}`, compressed, { contentType: compressed.type })
+    .upload(fullPath, uploadData, { contentType, upsert: false })
 
-  if (error) handleError(error, 'Failed to upload item photo. Please try again.')
-  return `${prefix}${filename}`
+  if (error) {
+    console.error('Item photo upload error details:', error)
+    if (error.message?.toLowerCase().includes('bucket not found') || error.statusCode === 404 || error.statusCode === '404' || error.error === 'Bucket not found') {
+      throw new Error(`Upload failed: Storage bucket '${bucket}' was not found in Supabase. Please run 'supabase/migrations/003_storage_setup.sql' in your Supabase SQL Editor.`)
+    }
+    if (error.message?.toLowerCase().includes('row-level security') || error.statusCode === 403 || error.statusCode === '403') {
+      throw new Error(`Upload failed: Permission denied by Supabase Storage RLS policy for '${bucket}'. Please run 'supabase/migrations/003_storage_setup.sql' in your Supabase SQL Editor.`)
+    }
+    handleError(error, `Failed to upload item photo to '${bucket}'`)
+  }
+
+  return fullPath
 }
 
 export async function logFoundItem(payload) {
@@ -337,15 +384,35 @@ export async function getApprovedAwaitingReturn({ page = 1, pageSize = 20 } = {}
 }
 
 export async function uploadReturnEvidence(file) {
-  const compressed = await compressImage(file)
-  const ext = compressed.name.split('.').pop()
-  const filename = `returns/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+  const rawName = (file && file.name) ? file.name : 'evidence.jpg'
+  const ext = rawName.includes('.') ? rawName.split('.').pop().toLowerCase() : 'jpg'
+  const filename = `returns/${Date.now()}-${Math.random().toString(36).slice(2, 9)}.${ext}`
+
+  let uploadData = file
+  try {
+    uploadData = await compressImage(file)
+  } catch (compErr) {
+    console.warn('Compression skipped:', compErr)
+    uploadData = file
+  }
+
+  const contentType = (uploadData && uploadData.type) || (file && file.type) || 'image/jpeg'
 
   const { error } = await supabase.storage
     .from('restricted-files')
-    .upload(filename, compressed, { contentType: compressed.type })
+    .upload(filename, uploadData, { contentType, upsert: false })
 
-  if (error) handleError(error, 'Failed to upload return evidence.')
+  if (error) {
+    console.error('Return evidence upload error details:', error)
+    if (error.message?.toLowerCase().includes('bucket not found') || error.statusCode === 404 || error.statusCode === '404') {
+      throw new Error("Upload failed: Storage bucket 'restricted-files' was not found in Supabase. Please run 'supabase/migrations/003_storage_setup.sql' in your Supabase SQL Editor.")
+    }
+    if (error.message?.toLowerCase().includes('row-level security') || error.statusCode === 403 || error.statusCode === '403') {
+      throw new Error("Upload failed: Permission denied by Supabase Storage RLS policy. Please run 'supabase/migrations/003_storage_setup.sql' in your Supabase SQL Editor.")
+    }
+    handleError(error, 'Failed to upload return evidence')
+  }
+
   return filename
 }
 
