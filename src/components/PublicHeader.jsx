@@ -7,64 +7,57 @@ export default function PublicHeader() {
   const isReportPage = location.pathname === '/log-item' || location.pathname === '/report-item'
   const isTrackPage = location.pathname === '/track'
 
+  const navLinkStyle = (isActive) =>
+    `flex items-center gap-2 text-sm py-2 px-2.5 sm:px-3 transition-colors min-h-[44px] border-b-2 ${
+      isActive
+        ? 'border-white text-white font-semibold'
+        : 'border-transparent text-blue-200 hover:text-white font-medium'
+    }`
+
   return (
     <header className="bg-blue-800 text-white shadow-md sticky top-0 z-30">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div className="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
         {/* Brand / Logo */}
         <Link to="/" className="flex items-center gap-2.5 group min-h-[44px] flex-shrink-0">
-          <div className="bg-blue-600 p-1.5 rounded-lg group-hover:bg-blue-500 transition-colors">
-            <Search className="w-5 h-5 text-white" aria-hidden="true" />
-          </div>
+          <Search className="w-6 h-6 text-sky-300 group-hover:text-white transition-colors" aria-hidden="true" />
           <div>
             <div className="font-bold text-base sm:text-lg leading-tight">Findr: Lost &amp; Found System</div>
             <div className="text-blue-200 text-xs leading-tight">Student Discipline Office</div>
           </div>
         </Link>
 
-        {/* Navigation Items */}
-        <nav className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-end" aria-label="Main Navigation">
+        {/* Navigation Items — Consistent unboxed text styling */}
+        <nav className="flex items-center gap-1 sm:gap-4 flex-wrap justify-end" aria-label="Main Navigation">
           {/* Retrieve Lost Item */}
           <Link
             to="/"
-            className={`flex items-center gap-1.5 text-xs sm:text-sm font-semibold px-2.5 sm:px-3 py-2 rounded-lg transition-colors min-h-[44px] ${
-              isRetrievePage
-                ? 'bg-blue-900 text-white shadow-inner ring-1 ring-blue-400/40'
-                : 'text-blue-100 hover:text-white hover:bg-blue-700'
-            }`}
+            className={navLinkStyle(isRetrievePage)}
             data-fr="FR-003"
           >
             <PackageSearch className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-            <span className="hidden md:inline">Retrieve Lost Item</span>
-            <span className="md:hidden">Retrieve</span>
+            <span className="hidden sm:inline">Retrieve Lost Item</span>
+            <span className="sm:hidden">Retrieve</span>
           </Link>
 
           {/* Report Found Item */}
           <Link
             to="/log-item"
-            className={`flex items-center gap-1.5 text-xs sm:text-sm font-semibold px-2.5 sm:px-3 py-2 rounded-lg transition-colors min-h-[44px] ${
-              isReportPage
-                ? 'bg-white text-blue-800 shadow-sm'
-                : 'bg-blue-700 hover:bg-blue-600 text-white'
-            }`}
+            className={navLinkStyle(isReportPage)}
             data-fr="FR-001"
           >
             <PlusCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-            <span className="hidden md:inline">Report Found Item</span>
-            <span className="md:hidden">Report</span>
+            <span className="hidden sm:inline">Report Found Item</span>
+            <span className="sm:hidden">Report</span>
           </Link>
 
           {/* Track Claim */}
           <Link
             to="/track"
-            className={`flex items-center gap-1.5 text-xs sm:text-sm font-medium transition-colors px-2.5 sm:px-3 py-2 rounded-lg min-h-[44px] ${
-              isTrackPage
-                ? 'bg-blue-900 text-white font-semibold shadow-inner ring-1 ring-blue-400/40'
-                : 'text-blue-200 hover:text-white hover:bg-blue-700'
-            }`}
+            className={navLinkStyle(isTrackPage)}
           >
             <Package className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-            <span className="hidden md:inline">Track Claim</span>
-            <span className="md:hidden">Track</span>
+            <span className="hidden sm:inline">Track Claim</span>
+            <span className="sm:hidden">Track</span>
           </Link>
         </nav>
       </div>
