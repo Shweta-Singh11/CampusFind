@@ -167,7 +167,7 @@ export default function ClaimFormPage() {
     if (!contactNo.trim()) errs.contactNo = 'Contact number is required.'
     else if (!/^[\d+\-\s]{7,13}$/.test(contactNo.trim())) errs.contactNo = 'Enter a valid contact number (7–13 digits).'
     if (!claimantType) errs.claimantType = 'Please select your type.'
-    if (!schoolId.trim()) errs.schoolId = 'School ID is required.'
+    if (!schoolId.trim()) errs.schoolId = 'College ID is required.'
     if (!item) errs.item = 'No item selected to claim.'
     if (!statement.trim() && !proofFile) {
       errs.proof = 'Please provide at least one form of proof: a written statement or a photo.'
@@ -370,7 +370,7 @@ export default function ClaimFormPage() {
 
             <div>
               <label className="label" htmlFor="schoolId">
-                School ID <span className="required-star" aria-hidden="true">*</span>
+                College ID <span className="required-star" aria-hidden="true">*</span>
               </label>
               <input
                 id="schoolId"

@@ -1,6 +1,6 @@
-# Findr: Lost & Found System — Student Discipline Office
+# CampusFind — KNIT Lost & Found — Office
 
-A full-stack web application for a school's Student Discipline Office. Found items are posted publicly so community members can check from their phone, submit claims, and track claim status — all without visiting the office.
+A full-stack web application for a college's Lost & Found Office at Kamla Nehru Institute of Technology (KNIT), Sultanpur. Found items are posted publicly so community members can check from their phone, submit claims, and track claim status — all without visiting the office.
 
 ---
 
@@ -192,7 +192,7 @@ Every approval, rejection, and return records who did it (`reviewed_by` / `retur
 | B-06 | Log Item form: category defaults to placeholder, date blank, future dates blocked, `*` on required fields. |
 | B-07 | ⓘ tooltip on "High-value item" shows phones, laptops, wallets, IDs, cards, jewelry, cash, ₱1,000+. |
 | B-08 | Track a Rejected claim → rejection reason displayed + "Resubmit Claim" button. |
-| B-09 | Approve click → confirmation dialog shows claimant name, school ID, item name. Confirm/Cancel. |
+| B-09 | Approve click → confirmation dialog shows claimant name, college ID, item name. Confirm/Cancel. |
 | B-10 | Copy proofread: "Successfully", "details", "description", "returned", "Key Chain". Item names from DB. |
 | B-11 | Text contrast ≥ 4.5:1. Status labels bold 12 px+. Active nav tab has blue highlight. |
 | B-12 | Login page: password show/hide toggle. Wrong credentials → inline error + attempts remaining → lockout message. |

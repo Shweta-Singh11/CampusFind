@@ -235,7 +235,7 @@ begin
     raise exception 'Invalid claimant type.';
   end if;
   if p_school_id is null or trim(p_school_id) = '' then
-    raise exception 'School ID is required.';
+    raise exception 'College ID is required.';
   end if;
 
   -- At least one proof must be provided

@@ -36,7 +36,7 @@ function ApproveConfirmModal({ isOpen, onClose, onConfirm, claim, confirming }) 
           {claim && (
             <div className="text-sm text-green-700 space-y-1 ml-7">
               <div><strong>Claimant:</strong> {claim.claimant?.claimant_name}</div>
-              <div><strong>School ID:</strong> {claim.claimant?.school_id}</div>
+              <div><strong>College ID:</strong> {claim.claimant?.school_id}</div>
               <div><strong>Item:</strong> {claim.item?.item_name}</div>
             </div>
           )}
@@ -269,7 +269,7 @@ export default function ClaimReviewPage() {
               <div className="px-5 py-2">
                 <InfoRow label="Name" value={claim.claimant?.claimant_name} />
                 <InfoRow label="Type" value={claim.claimant?.claimant_type} />
-                <InfoRow label="School ID" value={claim.claimant?.school_id} />
+                <InfoRow label="College ID" value={claim.claimant?.school_id} />
                 <InfoRow label="Contact" value={claim.claimant?.claimant_contact_no} />
                 <InfoRow label="Course/Year/Section" value={claim.claimant?.cys} />
                 <InfoRow label="Department" value={claim.claimant?.department} />

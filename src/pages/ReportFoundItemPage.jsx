@@ -44,14 +44,14 @@ function SuccessModal({ isOpen, onClose, itemName, isHighValue }) {
         <div>
           <h3 className="font-bold text-slate-900 text-lg">{itemName}</h3>
           <p className="text-slate-600 text-sm mt-1">
-            Thank you for helping our school community! This item is now listed in the public directory so the owner can submit a claim.
+            Thank you for helping our college community! This item is now listed in the public directory so the owner can submit a claim.
           </p>
         </div>
 
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-blue-800 text-left space-y-1">
           <p className="font-semibold">Next Step:</p>
           <p>
-            Please surrender the found item to the <strong>Student Discipline Office (Room 102)</strong> during regular school hours if you have not already done so.
+            Please surrender the found item to the <strong>Office (Room 102)</strong> during regular college hours if you have not already done so.
           </p>
           {isHighValue && (
             <p className="text-amber-800 font-medium pt-1">

@@ -59,7 +59,7 @@ function RecordReturnModal({ isOpen, onClose, claim, onDone }) {
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-1 text-sm">
           <div><strong className="text-blue-800">Item:</strong> {claim.item?.item_name}</div>
           <div><strong className="text-blue-800">Claimant:</strong> {claim.claimant?.claimant_name}</div>
-          <div><strong className="text-blue-800">School ID:</strong> {claim.claimant?.school_id}</div>
+          <div><strong className="text-blue-800">College ID:</strong> {claim.claimant?.school_id}</div>
           <div><strong className="text-blue-800">Contact:</strong> {claim.claimant?.claimant_contact_no}</div>
           <div><strong className="text-blue-800">Claim code:</strong> <span className="font-mono">{claim.claim_code}</span></div>
         </div>

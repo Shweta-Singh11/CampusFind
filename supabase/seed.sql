@@ -62,7 +62,7 @@ VALUES
 
   ('White Polo Shirt (L)',
    'Clothing',
-   'White polo shirt, size L, with an embroidered school logo. Likely a PE uniform.',
+   'White polo shirt, size L, with an embroidered college logo. Likely a PE uniform.',
    'placeholder-shirt.jpg',
    'Gym – Locker Room',
    now() - interval '3 days',
@@ -98,7 +98,7 @@ VALUES
 
   ('Brown Leather Wallet',
    'Wallets & Cards',
-   'Brown leather bifold wallet containing cash, an ATM card, and a school ID.',
+   'Brown leather bifold wallet containing cash, an ATM card, and a college ID.',
    'items/placeholder-wallet.jpg',
    'Activity Center',
    now() - interval '6 days',

@@ -171,7 +171,7 @@ export default function TrackClaimPage() {
             {/* Approved info */}
             {result.claim_status === 'Approved' && (
               <div className="bg-green-50 border border-green-200 rounded-xl p-3 text-sm text-green-800">
-                Your claim has been approved! Please visit the Student Discipline Office to collect your item.
+                Your claim has been approved! Please visit the Office to collect your item.
               </div>
             )}
 

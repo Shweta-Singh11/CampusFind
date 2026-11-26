@@ -120,8 +120,8 @@ export default function AdminLoginPage() {
           <div className="bg-white/10 rounded-2xl p-3 inline-block mb-3">
             <Lock className="w-8 h-8 text-white" aria-hidden="true" />
           </div>
-          <h1 className="text-2xl font-bold text-white">Findr: Lost &amp; Found System</h1>
-          <p className="text-blue-200 text-sm">Office Administrator Login</p>
+          <h1 className="text-2xl font-bold text-white">CampusFind</h1>
+          <p className="text-blue-200 text-sm">KNIT Lost &amp; Found — Office Administrator Login</p>
         </div>
 
         <div className="card p-6" data-fr="B-12">
@@ -145,7 +145,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={`input-field ${errorMsg ? 'input-error' : ''}`}
-                placeholder="admin@school.edu.ph"
+                placeholder="admin@knit.ac.in"
                 aria-required="true"
                 aria-invalid={!!errorMsg}
                 autoComplete="email"

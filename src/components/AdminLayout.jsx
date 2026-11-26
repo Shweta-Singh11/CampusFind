@@ -50,8 +50,8 @@ export default function AdminLayout({ children }) {
               <Search className="w-4 h-4 text-white" aria-hidden="true" />
             </div>
             <div>
-              <div className="font-bold text-sm leading-tight">Findr: Lost &amp; Found System</div>
-              <div className="text-blue-300 text-[11px]">Admin Panel</div>
+              <div className="font-bold text-sm leading-tight">CampusFind</div>
+              <div className="text-blue-300 text-[11px]">KNIT Lost &amp; Found · Admin Panel</div>
             </div>
           </Link>
         </div>
@@ -102,8 +102,8 @@ export default function AdminLayout({ children }) {
       <div className="lg:hidden fixed top-0 left-0 right-0 z-30 bg-blue-900 text-white">
         <div className="flex items-center justify-between px-4 py-3">
           <div>
-            <div className="font-bold text-sm">Findr: Lost &amp; Found System</div>
-            <div className="text-blue-300 text-[11px]">Admin Panel</div>
+            <div className="font-bold text-sm">CampusFind</div>
+            <div className="text-blue-300 text-[11px]">KNIT Lost &amp; Found · Admin Panel</div>
           </div>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}

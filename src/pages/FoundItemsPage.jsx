@@ -154,7 +154,7 @@ export default function FoundItemsPage() {
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Found Items</h1>
             <p className="text-slate-500 text-sm mt-1">
-              Browse items turned in to the Student Discipline Office.
+              Browse items turned in to the Office.
             </p>
           </div>
           <Link
